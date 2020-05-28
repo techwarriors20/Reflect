@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Reflect.Domain.Models;
 
-namespace Reflect.Api.Repository
+namespace Reflect.Domain.Interfaces
 {
     public interface IAttemptRepository
     {
