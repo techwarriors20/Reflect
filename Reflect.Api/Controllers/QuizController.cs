@@ -25,7 +25,7 @@ namespace Reflect.Api.Controllers
 
         // GET: api/v1/quiz/GetAllQuizs
         [HttpGet("GetAllQuizs")]
-      //  [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
+        [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
         public async Task<IActionResult> GetAllQuiz()
         {
             return new ObjectResult(await _quizRepository.GetAllQuiz());
@@ -33,7 +33,7 @@ namespace Reflect.Api.Controllers
 
         // GET: api/v1/quiz/GetQuizById
         [HttpGet("GetQuizById")]
-      //  [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
+        [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
         public async Task<IActionResult> GetQuiz(string id)
         {
             var @quiz = await _quizRepository.GetQuizById(id);
@@ -46,7 +46,7 @@ namespace Reflect.Api.Controllers
 
         // POST: api/v1/quiz/CreateQuiz
         [HttpPost("CreateQuiz")]
-        //[Authorize(Roles = RoleNames.ADMIN)]
+        [Authorize(Roles = RoleNames.ADMIN)]
         public async Task<IActionResult> Post([FromBody] Quiz @quiz)
         {
             await _quizRepository.CreateQuiz(@quiz);
@@ -55,7 +55,7 @@ namespace Reflect.Api.Controllers
 
         // PUT: api/v1/quiz/UpdateQuiz
         [HttpPut("UpdateQuiz")]
-        //[Authorize(Roles = RoleNames.USER)]
+        [Authorize(Roles = RoleNames.USER)]
         public async Task<IActionResult> Upate(Quiz @quiz)
         {
             await _quizRepository.UpdateQuiz(@quiz);
@@ -64,7 +64,7 @@ namespace Reflect.Api.Controllers
 
         // PUT: api/v1/quiz/UpdateQuiz
         [HttpDelete("DeleteQuiz")]
-        //[Authorize(Roles = RoleNames.USER)]
+        [Authorize(Roles = RoleNames.USER)]
         public IActionResult Delete(string id)
         {
              _quizRepository.DeleteQuiz(id);

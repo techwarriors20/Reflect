@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -55,7 +54,6 @@ namespace Reflect.Api
                 _ => new MongoClient(Configuration.GetSection("MongoDb:ConnectionString").Value));
             #endregion
 
-
             #region "Authentication"
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -88,12 +86,14 @@ namespace Reflect.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Reflect Api v1", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "Add \"Bearer\" before the token",
                     Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Add \"Bearer\" before the token"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -111,10 +111,7 @@ namespace Reflect.Api
 
                     }
                 });
-                //c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                //{
-                //    { "Bearer", new string[] { } }
-                //});
+              
             });
 
             #endregion          

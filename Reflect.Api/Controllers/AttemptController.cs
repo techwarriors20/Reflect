@@ -25,7 +25,7 @@ namespace Reflect.Api.Controllers
 
         // GET: api/v1/attempt/GetAllAttempt
         [HttpGet("GetAllAttempt")]
-      //  [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
+       [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
         public async Task<IActionResult> GetAllAttempt()
         {
             return new ObjectResult(await _attemptRepository.GetAllAttempt());
@@ -33,7 +33,7 @@ namespace Reflect.Api.Controllers
 
         // GET: api/v1/attempt/GetAllAttemptByUserId
         [HttpGet("GetAllAttemptByUserId")]
-        //  [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
+        [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
         public async Task<IActionResult> GetAllAttemptByUserId(string userId)
         {
             return new ObjectResult(await _attemptRepository.GetAllAttemptByUserId(userId));
@@ -41,7 +41,7 @@ namespace Reflect.Api.Controllers
                 
         // GET: api/v1/attempt/GetAttemptById
         [HttpGet("GetAttemptById")]
-      //  [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
+        [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
         public async Task<IActionResult> GetAttempt(string id)
         {
             var @attempt = await _attemptRepository.GetAttemptById(id);
@@ -54,7 +54,7 @@ namespace Reflect.Api.Controllers
 
         // POST: api/v1/attempt/CreateAttempt
         [HttpPost("CreateAttempt")]
-        //[Authorize(Roles = RoleNames.ADMIN)]
+        [Authorize(Roles = RoleNames.USER)]
         public async Task<IActionResult> Post([FromBody] QuizAttempt @attempt)
         {
             await _attemptRepository.CreateAttempt(@attempt);
