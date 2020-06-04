@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,8 +9,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using Polly;
 using Reflect.Api.Data;
 using Reflect.Api.Helpers;
+using Reflect.Api.Infrastructure.Handlers;
+using Reflect.Api.Infrastructure.ServiceDiscovery;
 using Reflect.Api.Repository;
 
 
@@ -23,6 +27,7 @@ namespace Reflect.Api
         }
 
         public IConfiguration Configuration { get; }
+        private string gatewayBaseURL = string.Empty;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -114,7 +119,25 @@ namespace Reflect.Api
               
             });
 
-            #endregion          
+            #endregion
+
+           // #region Service Discovery
+           // ConfigureConsul(services);
+           // #endregion
+
+           // #region CircuitBreaker
+           // gatewayBaseURL = Configuration["GatewayBaseURL"];
+
+           // services.AddHttpClient("gateway", c =>
+           // {
+           //     c.BaseAddress = new Uri(gatewayBaseURL);
+           // })
+           //.AddHttpMessageHandler<AccessTokenHttpMessageHandler>()
+           //.AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.CircuitBreakerAsync(
+           //    handledEventsAllowedBeforeBreaking: 2,
+           //    durationOfBreak: TimeSpan.FromMinutes(1)
+           //));
+           // #endregion
 
             #region DI
             services.AddTransient<IReflectContext, ReflectContext>();
@@ -151,12 +174,11 @@ namespace Reflect.Api
 
         }
 
-        private class ApiKeyScheme : OpenApiSecurityScheme
+        private void ConfigureConsul(IServiceCollection services)
         {
-            public string Description { get; set; }
-            public string Name { get; set; }
-            public string In { get; set; }
-            public string Type { get; set; }
+            var serviceConfig = Configuration.GetServiceConfig();
+
+            services.RegisterConsulServices(serviceConfig);
         }
     }
 }
