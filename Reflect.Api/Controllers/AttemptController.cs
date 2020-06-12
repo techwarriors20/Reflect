@@ -15,8 +15,7 @@ namespace Reflect.Api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/attempt")]
-    [EnableCors("CorsPolicy")]
-    public class AttemptController : ControllerBase
+     public class AttemptController : ControllerBase
     {
         private readonly IAttemptRepository _attemptRepository;
 

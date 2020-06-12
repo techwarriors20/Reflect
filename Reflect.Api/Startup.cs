@@ -156,6 +156,9 @@ namespace Reflect.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
+            
+            
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -165,7 +168,7 @@ namespace Reflect.Api
             });
 
             app.UseSwagger();
-            app.UseCors("CorsPolicy");
+           
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Reflect Api v1");

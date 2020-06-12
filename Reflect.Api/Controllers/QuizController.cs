@@ -15,7 +15,6 @@ namespace Reflect.Api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/quiz")]
-    [EnableCors("CorsPolicy")]
     public class QuizController : ControllerBase
     {
         private readonly IQuizRepository _quizRepository;
