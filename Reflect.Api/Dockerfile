@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["Reflect.Api/Reflect.Api.csproj", "Reflect.Api/"]
-RUN dotnet restore "Reflect.Api/Reflect.Api.csproj"
+COPY ["Reflect.Api.csproj", ""]
+RUN dotnet restore "Reflect.Api.csproj"
 COPY . .
 WORKDIR "/src/Reflect.Api"
 RUN dotnet build "Reflect.Api.csproj" -c Release -o /app/build
