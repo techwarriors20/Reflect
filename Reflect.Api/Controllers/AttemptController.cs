@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Reflect.Api.Models;
@@ -14,6 +15,7 @@ namespace Reflect.Api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/v1/attempt")]
+    [EnableCors("CorsPolicy")]
     public class AttemptController : ControllerBase
     {
         private readonly IAttemptRepository _attemptRepository;
