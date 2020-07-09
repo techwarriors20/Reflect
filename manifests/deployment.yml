@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "reflect-5aca"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "reflect-5aca"
+    spec:
+      containers:
+        - name: "reflect-5aca"
+          image: "reflectreg.azurecr.io/reflect"
+          ports:
+          - containerPort: 80
