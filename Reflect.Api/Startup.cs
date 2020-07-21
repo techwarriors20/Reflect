@@ -32,7 +32,7 @@ namespace Reflect.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers();           
 
             #region "Cors"
             services.AddCors(options =>
@@ -83,7 +83,15 @@ namespace Reflect.Api
                     IssuerSigningKey = new SymmetricSecurityKey(key) 
                 };
             });
-          
+
+            #endregion
+
+            #region Caching
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = appSettings.Redis;
+                option.InstanceName = "reflect";
+            });
             #endregion
 
             #region "Swagger"

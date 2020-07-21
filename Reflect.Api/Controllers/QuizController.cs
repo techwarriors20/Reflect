@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using Reflect.Api.Models;
 using Reflect.Api.Repository;
 using static Reflect.Api.Helpers.Constants;
@@ -18,10 +20,12 @@ namespace Reflect.Api.Controllers
     public class QuizController : ControllerBase
     {
         private readonly IQuizRepository _quizRepository;
+        private readonly IDistributedCache _distributedCache;
 
-        public QuizController(IQuizRepository quizRepository)
+        public QuizController(IQuizRepository quizRepository, IDistributedCache distributedCache)
         {
             _quizRepository = quizRepository;
+            _distributedCache = distributedCache;
         }
 
         // GET: api/v1/quiz/GetAllQuizs
@@ -29,7 +33,21 @@ namespace Reflect.Api.Controllers
         [Authorize(Roles = RoleNames.ADMIN + "," + RoleNames.USER)]
         public async Task<IActionResult> GetAllQuiz()
         {
-            return new ObjectResult(await _quizRepository.GetAllQuiz());
+            var cacheKey = "GetAllQuiz";
+            var quizJson = await _distributedCache.GetStringAsync(cacheKey);            
+
+            if (quizJson != null)
+            {
+               var quizList = JsonConvert.DeserializeObject<IEnumerable<Quiz>>(quizJson);
+               return new ObjectResult(quizList);
+            }
+            else
+            {
+                var quizs = await _quizRepository.GetAllQuiz();
+                quizJson = JsonConvert.SerializeObject(quizs);
+                await _distributedCache.SetStringAsync(cacheKey, quizJson);
+                return new ObjectResult(quizs);
+            }            
         }
 
         // GET: api/v1/quiz/GetQuizById
