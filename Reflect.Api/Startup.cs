@@ -47,7 +47,6 @@ namespace Reflect.Api
             #endregion
 
             #region "MongoDb"
-            var test = Configuration["Reflect.Api:MongoDB:ConnectionString"];
             services.Configure<MongoSettings>(
             options =>
             {
