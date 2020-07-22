@@ -47,6 +47,7 @@ namespace Reflect.Api
             #endregion
 
             #region "MongoDb"
+            var test = Configuration["Reflect.Api:MongoDB:ConnectionString"];
             services.Configure<MongoSettings>(
             options =>
             {
@@ -160,6 +161,8 @@ namespace Reflect.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAzureAppConfiguration();
 
             app.UseHttpsRedirection();
 
